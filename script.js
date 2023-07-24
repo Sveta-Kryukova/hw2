@@ -1,16 +1,10 @@
 const addValues = (a, b) => {
-  const isNumber = (value) => typeof value === "number" && isFinite(value);
-  const convertToString = (value) => (isNumber(value) && isNaN(value) ? "NaN" : String(value));
+  const allowedType = [ 'number', 'string']
 
-  if (isNumber(a) && isNumber(b)) {
-    return a + b;
-  }
-
-  if (typeof a === "string" && typeof b === "string") {
-    return a + b;
-  }
-
-  return convertToString(a) + convertToString(b);
+ if(allowedType.includes(typeof(a)) && allowedType.includes(typeof(b))) {
+  return a + b
+ }
+ throw new Error('Invalid input')
 }
 
   const stringifyValues = (a) => {
@@ -94,3 +88,5 @@ const addValues = (a, b) => {
     binaryToDecimal,
     convertToStringArray
   };
+
+
