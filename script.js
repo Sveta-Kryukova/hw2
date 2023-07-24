@@ -1,29 +1,26 @@
-const dataTransformer = {
-  addValues: (a, b) => {
-    const result = a + b;
-    if (result === isNaN) {
-      throw new Error('Invalid input');
+  const addValues = (a, b) => {
+    if (typeof a !== 'number' || typeof b !== 'number') {
+      throw new Error('Invalid input. Both arguments must be numbers.');
     }
-    return result;
-  },
+    return a + b;
+  }
 
-  stringifyValues: (a) => {
-    const result = JSON.stringify(a);
-    if (result === isNaN) {
-      throw new Error('Invalid input');
+  const stringifyValues = (a) => {
+      if (typeof a === 'object' || Array.isArray(a)) {
+        return JSON.stringify(a);
+      } else {
+        return String(a);
+      }
     }
-    return String(result);
-  },
 
-  invertBoolean: (a) => {
-    const result = !a;
-    if (result === isNaN) {
-      throw new Error('Invalid input');
+  const invertBoolean = (a) => {
+    if (typeof a !== 'boolean') {
+      throw new Error('Invalid input. Argument must be a boolean.');
     }
-    return result;
-  },
+    return !a;
+  }
 
-  convertToNumber: (a) => {
+  const convertToNumber = (a) => {
     let result = Number(a);
     if (typeof a === 'string') {
       result = parseFloat(a);
@@ -32,59 +29,63 @@ const dataTransformer = {
       throw new Error('Invalid input');
     }
     return result;
-  },
+  }
 
-  coerceToType: (value, type) => {
+  const coerceToType = (value, type) => {
     switch (type) {
       case 'string':
         return String(value);
       case 'number':
-        return Number(value);
+        return dataTransformer.convertToNumber(value);
       case 'boolean':
         return Boolean(value);
       case 'object':
         return Object(value);
       case 'array':
-        return Array(value);
+        return Array.from(value);
       default:
-        throw new Error('Invalid type');
+        throw new Error('Invalid type. Unable to coerce to the specified type.');
     }
-  },
+  }
 
   //Additional functions
-  convertToArray: (a) => {
-    const result = Array(a);
-    if (result === isNaN) {
-      throw new Error('Invalid input');
+  const convertToArray = (a) => {
+    if (!Array.isArray(value)) {
+      throw new Error('Invalid input. Argument must be an array.');
     }
-    if (typeof a === 'array') {
-      result = a;
-    }
-    return result;
-  },
+    return Array.from(value);
+  }
 
-  mergeObjects: (a, b) => {
-    const result = Object.assign(a, b);
-    if (result === isNaN) {
-      throw new Error('Invalid input');
+  const mergeObjects = (a, b) => {
+    if (typeof obj1 !== 'object' || typeof obj2 !== 'object') {
+      throw new Error('Invalid input. Both arguments must be objects.');
     }
-    return result;
-  },
+    return Object.assign({}, obj1, obj2);
+  }
 
-  binaryToDecimal: (a) => {
-    const result = parseInt(a, 2);
-    if (result === isNaN) {
-      throw new Error('Invalid input');
+  const binaryToDecimal = (a) => {
+    if (!/^[0-1]+$/.test(binaryStr)) {
+      throw new Error('Invalid input. Argument must be a binary string.');
     }
-    return result;
-  },
+    return parseInt(binaryStr, 2);
+  };
 
-  convertToStringArray: (a) => {
+  const convertToStringArray = (a) => {
     const result = a.toString();
     if (result === isNaN) {
       throw new Error('Invalid input');
     }
     return result;
   }
-}
-console.log(dataTransformer.addValues(null, 2));
+
+  const dataTransformer = {
+    addValues,
+    stringifyValues,
+    invertBoolean,
+    convertToNumber,
+    coerceToType,
+    convertToArray,
+    mergeObjects,
+    binaryToDecimal,
+    convertToStringArray
+  };
