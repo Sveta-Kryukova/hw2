@@ -1,12 +1,20 @@
-  const addValues = (a, b) => {
-    if (typeof a !== 'number' || typeof b !== 'number') {
-      throw new Error('Invalid input. Both arguments must be numbers.');
-    }
+const addValues = (a, b) => {
+  const isNumber = (value) => typeof value === "number" && isFinite(value);
+  const convertToString = (value) => (isNumber(value) && isNaN(value) ? "NaN" : String(value));
+
+  if (isNumber(a) && isNumber(b)) {
     return a + b;
   }
 
+  if (typeof a === "string" && typeof b === "string") {
+    return a + b;
+  }
+
+  return convertToString(a) + convertToString(b);
+}
+
   const stringifyValues = (a) => {
-      if (typeof a === 'object' || Array.isArray(a)) {
+      if (typeof a === 'object') {
         return JSON.stringify(a);
       } else {
         return String(a);
@@ -34,27 +42,24 @@
   const coerceToType = (value, type) => {
     switch (type) {
       case 'string':
-        return String(value);
+        return stringifyValues(value);
       case 'number':
-        return dataTransformer.convertToNumber(value);
+        return convertToNumber(value);
       case 'boolean':
         return Boolean(value);
       case 'object':
         return Object(value);
       case 'array':
-        return Array.from(value);
+        return convertToArray(value);
       default:
         throw new Error('Invalid type. Unable to coerce to the specified type.');
     }
   }
 
   //Additional functions
-  const convertToArray = (a) => {
-    if (!Array.isArray(value)) {
-      throw new Error('Invalid input. Argument must be an array.');
-    }
-    return Array.from(value);
-  }
+  const convertToArray = (arg) => {
+    return Array.isArray(arg) ? arg : [arg];
+  };
 
   const mergeObjects = (a, b) => {
     if (typeof obj1 !== 'object' || typeof obj2 !== 'object') {
